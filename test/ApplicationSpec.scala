@@ -12,6 +12,8 @@ import play.api.test.Helpers._
  * You can mock out a whole application including requests, plugins etc.
  * For more information, consult the wiki.
  */
+
+//TODO isolate tests - clean DB between runs
 @RunWith(classOf[JUnitRunner])
 class ApplicationSpec extends Specification {
 
@@ -39,7 +41,14 @@ class ApplicationSpec extends Specification {
     }
 
     "create and return multiple todo items" in new WithApplication {
-      todo
+      val todoItemCreate = Seq.tabulate(3)(i => TodoItemCreate(i, s"description_$i", isDone = false))
+      todoItemCreate.foreach(item => route(FakeRequest(POST, "/api/v1/todoItem").withJsonBody(Json.toJson(item))).get)
+
+      val listResult = route(FakeRequest(GET, "/api/v1/todoItem")).get
+
+      status(listResult) must equalTo(OK)
+      contentType(listResult) must beSome.which(_ == "application/json")
+      contentAsJson(listResult).as[Seq[TodoItem]].map(item => TodoItemCreate(item.priority, item.description, item.isDone)) must containAllOf(todoItemCreate)
     }
   }
 }
