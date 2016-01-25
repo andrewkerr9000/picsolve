@@ -15,16 +15,16 @@ class ApplicationSpec extends Specification {
 
   "Application" should {
 
-    "send 404 on a bad request" in new WithApplication{
-      route(FakeRequest(GET, "/boum")) must beSome.which (status(_) == NOT_FOUND)
+    "return empty list if no todo items" in new WithApplication {
+      todo
     }
 
-    "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/")).get
+    "create and return a todo item" in new WithApplication {
+      todo
+    }
 
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("Your new application is ready.")
+    "create and return multiple todo items" in new WithApplication {
+      todo
     }
   }
 }
