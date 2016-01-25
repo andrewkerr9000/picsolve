@@ -3,3 +3,4 @@
 # ~~~~
 
 GET     /api/v1/todoItem    controllers.Application.list
+POST    /api/v1/todoItem    controllers.Application.create()

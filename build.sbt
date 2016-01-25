@@ -7,6 +7,9 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
+  "org.scalikejdbc" %% "scalikejdbc"       % "2.3.4",
+  "com.h2database"  %  "h2"                % "1.4.191",
+  "ch.qos.logback"  %  "logback-classic"   % "1.1.3",
   jdbc,
   cache,
   ws,
